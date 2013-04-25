@@ -13,7 +13,7 @@ public class MainActivity extends Activity {
 	
 	private MyTask dft = null;
 	private ProgressBar pb = null;
-	private Handler myHandler = new Handler();
+	// private Handler myHandler = new Handler();
 	
 	// ====================================================================
 	
@@ -43,7 +43,9 @@ public class MainActivity extends Activity {
 	
 	     protected void onProgressUpdate(Integer... progress) {
 	    	 Log.d("methods", "DownloadFilesTask::onProgressUpdate");
-	         setProgressPercent(progress[0]);
+	    	 if (!isCancelled()) {
+	    		 pb.setProgress(progress[0]);
+	    	 }
 	     }
 	
 	     protected void onPostExecute(Long result) {
@@ -51,15 +53,20 @@ public class MainActivity extends Activity {
 	         showInfo("Downloaded " + result + " bytes");
 	         pb.setProgress(100);
 	     }
+	     
+	     protected void onCancelled() {
+	    	 Log.d("methods", "DownloadFilesTask::onCancelled");
+	         pb.setProgress(0);
+	     }
 	 }
 	
 	// =================================================================
 	
-	private void setProgressPercent(int progress) {
-		Log.d("methods", "DownloadFilesTask::setProgressPercent");
-		Log.i("progress", " " + progress + "%");
-		pb.setProgress(progress);
-	}
+//	private void setProgressPercent(int progress) {
+//		Log.d("methods", "DownloadFilesTask::setProgressPercent");
+//		Log.i("progress", " " + progress + "%");
+//		pb.setProgress(progress);
+//	}
 
 	public void showInfo(String string) {
 		Log.d("methods", "DownloadFilesTask::showInfo");
